@@ -1,0 +1,65 @@
+/*.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}*/
+#qr-code-img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+
+
+/*.nav-pills {
+    margin-bottom: 20px;
+}*/
+
+/*.btn {
+    margin-top: 10px;
+}*/
+
+.tab-content {
+    text-align: center;
+}
+
+/* Style pour centrer l'image du QR Code */
+#qr-code-img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* Style pour les boutons */
+.btn-primary {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.btn-primary:hover {
+    background-color: #46b8da;
+    border-color: #398b9d;
+}
+
+.btn-success {
+    background-color: #5cb85c;
+    border-color: #4cae4c;
+}
+
+.btn-success:hover {
+    background-color: #4cae4c;
+    border-color: #398439;
+}
+
+.btn-info {
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+
+.btn-info:hover {
+    background-color: #46b8da;
+    border-color: #398b9d;
+}

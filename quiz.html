@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/quiz.css">
+    <title>Quiz Anti-Gaspillage</title>
+    
+</head>
+<body>
+    <h3 class="text-logo text-center">
+        <img src="logo.png" alt="Mouneh Logo" style="height: 100px; margin-right: 10px;">
+        Mouneh
+        <img src="logo.png" alt="Mouneh Logo" style="height: 100px; margin-left: 10px;">
+    </h3>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="accueil.php">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.php">Mes dons</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="avis_client.php">Avis client</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="quiz.html">Quiz</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href=".php">À propos de nous</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div id="points-container">
+        <p>Points : <span id="points">0</span></p>
+    </div>
+    
+    <div class="quiz-container">
+        <h1>Quiz Anti-Gaspillage Alimentaire</h1>
+        <form id="quiz-form">
+            <!-- Question 1 -->
+            <div class="question">
+                <p>1. Quel pourcentage de la nourriture produite dans le monde est gaspillé chaque année ?</p>
+                <label><input type="radio" name="q1" value="a">10% </label>
+                <label><input type="radio" name="q1" value="b">20%</label>
+                <label><input type="radio" name="q1" value="c">33%</label>
+                <label><input type="radio" name="q1" value="d">50%</label>
+            </div>
+            
+            <div class="question">
+                <p>2. Combien de litres d'eau sont nécessaires pour produire un kilogramme de blé ?</p>
+                <label><input type="radio" name="q2" value="a">500 litres</label>
+                <label><input type="radio" name="q2" value="b">1000 litres </label>
+                <label><input type="radio" name="q2" value="c">1500 litres </label>
+                <label><input type="radio" name="q2" value="d">2500 litres </label>
+            </div>
+            
+            <div class="question">
+                <p>3. Quel est le meilleur moyen de réduire les déchets alimentaires à la maison ?</p>
+                <label><input type="radio" name="q3" value="a">Acheter en grande quantité.</label>
+                <label><input type="radio" name="q3" value="b">Planifier ses repas à l'avance.</label>
+                <label><input type="radio" name="q3" value="c">Laisser les restes dans le réfrigérateur pendant plusieurs semaines.</label>
+                <label><input type="radio" name="q3" value="d">Jeter les restes directement.</label>
+            </div>
+            
+            <div class="question">
+                <p>4. Donner ses surplus alimentaires peut :</p>
+                <label><input type="radio" name="q4" value="a">Aider à lutter contre la faim.</label>
+                <label><input type="radio" name="q4" value="b">Réduire l'empreinte écologique.</label>
+                <label><input type="radio" name="q4" value="c">Construire une communauté solidaire.</label>
+                <label><input type="radio" name="q4" value="d">Toutes ces réponses.</label>
+            </div>
+            
+            <div class="question">
+                <p>5. Quel est le principal effet du gaspillage alimentaire sur l'environnement ?</p>
+                <label><input type="radio" name="q5" value="a">Augmentation des déchets plastiques</label>
+                <label><input type="radio" name="q5" value="b">Émission de méthane dans les décharges</label>
+                <label><input type="radio" name="q5" value="c">Déforestation massive</label>
+                <label><input type="radio" name="q5" value="d">Pollution de l'eau potable</label>
+            </div>
+            
+            <div class="question">
+                <p>6. Que faire avec des fruits et légumes légèrement abîmés ?</p>
+                <label><input type="radio" name="q6" value="a">Les jeter immédiatement.</label>
+                <label><input type="radio" name="q6" value="b">Les transformer en soupes, smoothies ou compotes.</label>
+                <label><input type="radio" name="q6" value="c">Les composter directement sans les cuisiner.</label>
+                <label><input type="radio" name="q6" value="d">Les ignorer jusqu'à ce qu'ils pourrissent complètement.</label>
+            </div>
+            
+            <div class="question">
+                <p>7. Combien de repas pourrait-on fournir chaque jour avec les surplus alimentaires jetés en Europe ?</p>
+                <label><input type="radio" name="q7" value="a">10 millions</label>
+                <label><input type="radio" name="q7" value="b">50 millions</label>
+                <label><input type="radio" name="q7" value="c">100 millions</label>
+                <label><input type="radio" name="q7" value="d">150 millions</label>
+            </div>
+            
+            <div class="question">
+                <p>8. Que peut-on faire avec les restes de pain dur ?</p>
+                <label><input type="radio" name="q8" value="a">Les jeter directement.</label>
+                <label><input type="radio" name="q8" value="b">En faire des croûtons ou de la chapelure.</label>
+                <label><input type="radio" name="q8" value="c">Les donner à des animaux.</label>
+                <label><input type="radio" name="q8" value="d">B et C.</label>
+            </div>
+            
+            <div class="question">
+                <p>9. Combien de jours les restes cuisinés peuvent-ils être conservés au réfrigérateur ?</p>
+                <label><input type="radio" name="q9" value="a">1 jour</label>
+                <label><input type="radio" name="q9" value="b">3 à 4 jours</label>
+                <label><input type="radio" name="q9" value="c">7 jours</label>
+                <label><input type="radio" name="q9" value="d">Plus de 10 jours</label>
+            </div>
+            
+            <div class="question">
+                <p>10. Si vous jetez en moyenne 1 kg de nourriture par semaine, combien cela représente-t-il par an ?</p>
+                <label><input type="radio" name="q10" value="a">12 kg</label>
+                <label><input type="radio" name="q10" value="b">24 kg</label>
+                <label><input type="radio" name="q10" value="c">52 kg</label>
+                <label><input type="radio" name="q10" value="d">100 kg</label>
+            </div>
+            
+            <div class="question">
+                <p>11. Que peut-on faire avec des épluchures de légumes ?</p>
+                <label><input type="radio" name="q11" value="a">Les composter.</label>
+                <label><input type="radio" name="q11" value="b">En faire un bouillon maison.</label>
+                <label><input type="radio" name="q11" value="c">Les jeter.</label>
+                <label><input type="radio" name="q11" value="d">A et B.</label>
+            </div>
+            
+            <div class="question">
+                <p>12. Avec du lait presque périmé, vous pouvez préparer :</p>
+                <label><input type="radio" name="q12" value="a">Du fromage frais.</label>
+                <label><input type="radio" name="q12" value="b">Une crème dessert</label>
+                <label><input type="radio" name="q12" value="c">Du pain perdu.</label>
+                <label><input type="radio" name="q12" value="d">Toutes ces réponses.</label>
+            </div>
+            
+
+            <button type="button" onclick="submitQuiz()">Soumettre</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    
+    
+    <script src="quiz.js"></script>
+</body>
+</html>
