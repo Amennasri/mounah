@@ -89,6 +89,38 @@ $donations = $stmt->fetchAll();
             font-weight: bold;
             color: #e7480f !important;
         }
+
+        .thumbnail {
+            position: relative;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .thumbnail img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .caption {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .col-sm-6,
+        .col-md-4 {
+            flex: 1 1 calc(33.33% - 15px);
+        }
     </style>
 </head>
 
@@ -113,104 +145,101 @@ $donations = $stmt->fetchAll();
         </div>
     </nav>
 
-    <div class="container mt-5">
-        <h1 class="text-center">Liste des Dons Disponibles</h1>
-        <div class="row">
-            <?php foreach ($donations as $donation) : ?>
-                <div class="col-sm-6 col-md-4">
-                    <div class="thumbnail">
-                        <?php if (!empty($donation['image'])) : ?>
-                            <img src="uploads/<?php echo htmlspecialchars($donation['image']); ?>" alt="Image du don" style="max-width: 100%; height: auto;">
-                        <?php else : ?>
-                            <img src="uploads/default.jpg" alt="Image par défaut" style="max-width: 100%; height: auto;">
-                        <?php endif; ?>
-                        <div class="don-card-body">
-                            <h5><?php echo htmlspecialchars($donation['nom']); ?></h5>
-                            <p><?php echo htmlspecialchars($donation['description']); ?></p>
-                            <p><strong>Distance :</strong> <?php echo round($donation['distance'], 2); ?> km</p>
-                            <p><strong>Expire le :</strong> <?php echo htmlspecialchars($donation['expiry_date']); ?></p>
-                            <p><strong>Date de publication :</strong> <?php echo htmlspecialchars($donation['created_at']); ?></p>
-                            <a href="discussion.php?receiver_id=<?php echo $donation['donor_id']; ?>" class="btn btn-primary btn-sm">Discuter avec le donneur</a>
-                        </div>
+    <div class="row">
+        <?php foreach ($donations as $donation) : ?>
+            <div class="col-sm-6 col-md-4">
+                <div class="thumbnail">
+                    <?php if (!empty($donation['image'])) : ?>
+                        <img src="uploads/<?php echo htmlspecialchars($donation['image']); ?>" alt="Image du don" onerror="this.onerror=null; this.src='placeholder.jpg';">
+                    <?php else : ?>
+                        <img src="placeholder.jpg" alt="Image non disponible">
+                    <?php endif; ?>
+                    <div class="caption">
+                        <h4><?php echo htmlspecialchars($donation['nom']); ?></h4>
+                        <p><?php echo htmlspecialchars($donation['description']); ?></p>
+                        <p><strong>Date d'expiration :</strong> <?php echo htmlspecialchars($donation['expiry_date']); ?></p>
+                        <p><strong>Publiée le :</strong> <?php echo htmlspecialchars($donation['created_at']); ?></p>
+                        <a href="discussion.php?receiver_id=<?php echo $donation['donor_id']; ?>" class="btn btn-primary btn-sm">Discuter avec le donneur</a>
                     </div>
                 </div>
-        </div>
+            </div>
+        <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
-</div>
-</div>
 
-<!--feedback -->
-<div class="container">
-    <h1 class="mt-5 mb-5"> </h1>
-    <div class="card">
-        <div class="card-header">feedback client</div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-4 text-center">
-                    <h1 class="text-warning mt-4 mb-4">
-                        <b><span id="average_rating">0.0</span> / 5</b>
-                    </h1>
-                    <div class="mb-3">
-                        <i class="fas fa-star star-light mr-1 main_star"></i>
-                        <i class="fas fa-star star-light mr-1 main_star"></i>
-                        <i class="fas fa-star star-light mr-1 main_star"></i>
-                        <i class="fas fa-star star-light mr-1 main_star"></i>
-                        <i class="fas fa-star star-light mr-1 main_star"></i>
+    <!--feedback -->
+    <div class="container">
+        <h1 class="mt-5 mb-5"> </h1>
+        <div class="card">
+            <div class="card-header">feedback client</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4 text-center">
+                        <h1 class="text-warning mt-4 mb-4">
+                            <b><span id="average_rating">0.0</span> / 5</b>
+                        </h1>
+                        <div class="mb-3">
+                            <i class="fas fa-star star-light mr-1 main_star"></i>
+                            <i class="fas fa-star star-light mr-1 main_star"></i>
+                            <i class="fas fa-star star-light mr-1 main_star"></i>
+                            <i class="fas fa-star star-light mr-1 main_star"></i>
+                            <i class="fas fa-star star-light mr-1 main_star"></i>
+                        </div>
+                        <h3><span id="total_review">0</span> Note</h3>
                     </div>
-                    <h3><span id="total_review">0</span> Note</h3>
-                </div>
-                <div class="col-sm-4">
-                    <p>
-                    <div class="progress-label-left"><b>5</b> <i class="fas fa-star text-warning"></i></div>
+                    <div class="col-sm-4">
+                        <p>
+                        <div class="progress-label-left"><b>5</b> <i class="fas fa-star text-warning"></i></div>
 
-                    <div class="progress-label-right">(<span id="total_five_star_review">0</span>)</div>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="five_star_progress"></div>
-                    </div>
-                    </p>
-                    <p>
-                    <div class="progress-label-left"><b>4</b> <i class="fas fa-star text-warning"></i></div>
+                        <div class="progress-label-right">(<span id="total_five_star_review">0</span>)</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="five_star_progress"></div>
+                        </div>
+                        </p>
+                        <p>
+                        <div class="progress-label-left"><b>4</b> <i class="fas fa-star text-warning"></i></div>
 
-                    <div class="progress-label-right">(<span id="total_four_star_review">0</span>)</div>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="four_star_progress"></div>
-                    </div>
-                    </p>
-                    <p>
-                    <div class="progress-label-left"><b>3</b> <i class="fas fa-star text-warning"></i></div>
+                        <div class="progress-label-right">(<span id="total_four_star_review">0</span>)</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="four_star_progress"></div>
+                        </div>
+                        </p>
+                        <p>
+                        <div class="progress-label-left"><b>3</b> <i class="fas fa-star text-warning"></i></div>
 
-                    <div class="progress-label-right">(<span id="total_three_star_review">0</span>)</div>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="three_star_progress"></div>
-                    </div>
-                    </p>
-                    <p>
-                    <div class="progress-label-left"><b>2</b> <i class="fas fa-star text-warning"></i></div>
+                        <div class="progress-label-right">(<span id="total_three_star_review">0</span>)</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="three_star_progress"></div>
+                        </div>
+                        </p>
+                        <p>
+                        <div class="progress-label-left"><b>2</b> <i class="fas fa-star text-warning"></i></div>
 
-                    <div class="progress-label-right">(<span id="total_two_star_review">0</span>)</div>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="two_star_progress"></div>
-                    </div>
-                    </p>
-                    <p>
-                    <div class="progress-label-left"><b>1</b> <i class="fas fa-star text-warning"></i></div>
+                        <div class="progress-label-right">(<span id="total_two_star_review">0</span>)</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="two_star_progress"></div>
+                        </div>
+                        </p>
+                        <p>
+                        <div class="progress-label-left"><b>1</b> <i class="fas fa-star text-warning"></i></div>
 
-                    <div class="progress-label-right">(<span id="total_one_star_review">0</span>)</div>
-                    <div class="progress">
-                        <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="one_star_progress"></div>
+                        <div class="progress-label-right">(<span id="total_one_star_review">0</span>)</div>
+                        <div class="progress">
+                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" id="one_star_progress"></div>
+                        </div>
+                        </p>
                     </div>
-                    </p>
-                </div>
-                <div class="col-sm-4 text-center">
-                    <h3 class="mt-4 mb-3">Écrivez votre avis ici</h3>
-                    <button type="button" name="add_review" id="add_review" class="btn btn-primary">Avis</button>
+                    <div class="col-sm-4 text-center">
+                        <h3 class="mt-4 mb-3">Écrivez votre avis ici</h3>
+                        <button type="button" name="add_review" id="add_review" class="btn btn-primary">Avis</button>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="mt-5" id="review_content"></div>
     </div>
-    <div class="mt-5" id="review_content"></div>
-</div>
+    <footer class="text-center mt-4">
+        <p>&copy; 2024 Mouneh. Tous droits réservés.</p>
+    </footer>
 </body>
 
 </html>
@@ -245,6 +274,8 @@ $donations = $stmt->fetchAll();
         </div>
     </div>
 </div>
+<a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+
 </body>
 <script>
     $(document).ready(function() {

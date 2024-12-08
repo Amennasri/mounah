@@ -8,30 +8,38 @@ if (!isset($_SESSION["id_user"])) {
     exit();
 }
 
-// Récupération des IDs utilisateur
+// Récupération des IDs utilisateur et don
 $id_user = $_SESSION["id_user"];
 $receiver_id = $_GET['receiver_id'] ?? null;
+$donation_id = $_GET['donation_id'] ?? null;
 
-if (!$receiver_id) {
-    die("Aucun utilisateur sélectionné pour discuter.");
-}
+/*if (!$receiver_id || !$donation_id) {
+    die("Utilisateur ou don non spécifié.");
+}*/
 
-// Récupération des messages entre les deux utilisateurs
-$stmt = $db->prepare("SELECT * FROM messages 
-                      WHERE (sender_id = :id_user AND receiver_id = :receiver_id) 
-                      OR (sender_id = :receiver_id AND receiver_id = :id_user)
-                      ORDER BY created_at ASC");
-$stmt->execute(['id_user' => $id_user, 'receiver_id' => $receiver_id]);
+// Récupération des messages entre les deux utilisateurs pour un don spécifique
+$stmt = $db->prepare("
+    SELECT * FROM messages 
+    WHERE donation_id = :donation_id 
+      AND ((sender_id = :id_user AND receiver_id = :receiver_id) 
+        OR (sender_id = :receiver_id AND receiver_id = :id_user))
+    ORDER BY created_at ASC
+");
+$stmt->execute([
+    'donation_id' => $donation_id,
+    'id_user' => $id_user,
+    'receiver_id' => $receiver_id
+]);
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // Envoi d'un message
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message'])) {
     $message = htmlspecialchars($_POST['message']);
-    $stmt = $db->prepare("INSERT INTO messages (sender_id, receiver_id, message) VALUES (?, ?, ?)");
-    $stmt->execute([$id_user, $receiver_id, $message]);
+    $stmt = $db->prepare("INSERT INTO messages (sender_id, receiver_id, donation_id, message) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$id_user, $receiver_id, $donation_id, $message]);
 
     // Redirection pour éviter le ré-envoi du formulaire
-    header("Location: discussion.php?receiver_id=$receiver_id");
+    header("Location: discussion.php?receiver_id=$receiver_id&donation_id=$donation_id");
     exit();
 }
 ?>
@@ -100,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message'])) {
                 </div>
             <?php endforeach; ?>
         </div>
-        <form method="POST">
+        <form method="POST" action="discussion.php?receiver_id=<?= $receiver_id ?>&donation_id=<?= $donation_id ?>">
             <div class="chat-footer">
                 <div class="mb-3">
                     <textarea class="form-control" name="message" rows="3" placeholder="Écrire un message..."></textarea>
