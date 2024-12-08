@@ -134,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
       <thead>
         <tr>
           <th>Nom</th>
-          <th>Photo</th>
+          <th>image</th>
           <th>Description</th>
           <th>Date d'expiration</th>
           <th>Localisation</th>
@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <?php
         // Récupérer les dons de l'utilisateur connecté
         $stmt = $db->prepare('
-                    SELECT id, nom, description, photo, expiry_date, location, created_at
+                    SELECT id, nom, description, image, expiry_date, location, created_at
                     FROM donations 
                     WHERE user_id = ? 
                     ORDER BY created_at DESC
@@ -162,11 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
           echo '<td>' . $donation['nom'] . '</td>';
           echo '<td>';
-          if (!empty($donation['photo'])) {
-            // Afficher la photo si elle existe
-            echo '<img src="uploads/' . htmlspecialchars($donation['photo']) . '" alt="Photo" style="width: 100px; height: auto; object-fit: cover; border-radius: 5px;">';
+          if (!empty($donation['image'])) {
+            // Afficher la image si elle existe
+            echo '<img src="uploads/' . htmlspecialchars($donation['image']) . '" alt="image" style="width: 100px; height: auto; object-fit: cover; border-radius: 5px;">';
           } else {
-            echo 'Pas de photo';
+            echo 'Pas de image';
           }
           echo '</td>';
 

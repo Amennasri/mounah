@@ -16,16 +16,16 @@ if (!$id) {
     exit();
 }
 
-$nomError = $descriptionError = $photoError = "";
-$nom = $description = $photo = "";
+$nomError = $descriptionError = $imageError = "";
+$nom = $description = $image = "";
 
 // Traitement du formulaire
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $nom = htmlspecialchars($_POST["nom"]);
     $description = htmlspecialchars($_POST["description"]);
-    $newPhoto = $_FILES["photo"]["name"] ?? "";
-    $photoPath = $newPhoto ? 'uploads/' . basename($newPhoto) : $photo;
-    $photoExtension = pathinfo($photoPath, PATHINFO_EXTENSION);
+    $newimage = $_FILES["image"]["name"] ?? "";
+    $imagePath = $newimage ? 'uploads/' . basename($newimage) : $image;
+    $imageExtension = pathinfo($imagePath, PATHINFO_EXTENSION);
     $isSuccess = true;
 
     if (empty($nom)) {
@@ -36,15 +36,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $descriptionError = "Ce champ ne peut pas être vide.";
         $isSuccess = false;
     }
-    if ($newPhoto && !in_array($photoExtension, ["jpg", "jpeg", "png", "gif"])) {
-        $photoError = "Les fichiers autorisés sont : .jpg, .jpeg, .png, .gif.";
+    if ($newimage && !in_array($imageExtension, ["jpg", "jpeg", "png", "gif"])) {
+        $imageError = "Les fichiers autorisés sont : .jpg, .jpeg, .png, .gif.";
         $isSuccess = false;
     }
 
     if ($isSuccess) {
-        if ($newPhoto && move_uploaded_file($_FILES["photo"]["tmp_name"], $photoPath)) {
-            $stmt = $db->prepare("UPDATE donations SET nom = ?, description = ?, photo = ? WHERE id = ? AND user_id = ?");
-            $stmt->execute([$nom, $description, $photoPath, $id, $id_user]);
+        if ($newimage && move_uploaded_file($_FILES["image"]["tmp_name"], $imagePath)) {
+            $stmt = $db->prepare("UPDATE donations SET nom = ?, description = ?, image = ? WHERE id = ? AND user_id = ?");
+            $stmt->execute([$nom, $description, $imagePath, $id, $id_user]);
         } else {
             $stmt = $db->prepare("UPDATE donations SET nom = ?, description = ? WHERE id = ? AND user_id = ?");
             $stmt->execute([$nom, $description, $id, $id_user]);
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $nom = $donation["nom"];
     $description = $donation["description"];
-    $photo = $donation["photo"];
+    $image = $donation["image"];
 }
 ?>
 
@@ -99,12 +99,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
 
             <div class="form-group">
-                <label for="photo">photo:</label>
-                <input type="file" class="form-control" id="photo" name="photo">
-                <?php if ($photo): ?>
-                    <img src="<?= $photo ?>" alt="photo de l'donations" style="max-width: 150px; margin-top: 10px;">
+                <label for="image">image:</label>
+                <input type="file" class="form-control" id="image" name="image">
+                <?php if ($image): ?>
+                    <img src="<?= $image ?>" alt="image de l'donations" style="max-width: 150px; margin-top: 10px;">
                 <?php endif; ?>
-                <span class="text-danger"><?= $photoError ?></span>
+                <span class="text-danger"><?= $imageError ?></span>
             </div>
             <button type="submit" class="btn btn-success">Modifier</button>
             <a href="index.php" class="btn btn-secondary">Annuler</a>

@@ -2,14 +2,15 @@ body {
     background-color: #999;
 }
 
-.don-image {
-    width: 100%; 
-    height: auto;
-    max-height: 200px; /* Limite la hauteur pour uniformiser */
-    object-fit: cover; /* Permet de recadrer l'image sans la déformer */
+.don-card img {
+    max-width: 100%; /* Limite la largeur de l'image à celle de son conteneur */
+    height: auto; /* Maintient les proportions de l'image */
     border-radius: 8px; /* Ajoute des coins arrondis */
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ajoute une ombre douce */
+    object-fit: cover; /* Adapte l'image à son conteneur */
+    max-height: 200px; /* Limite la hauteur de l'image */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre pour un effet esthétique */
 }
+
 
 .site {
     font-family: 'Holtwood One SC', sans-serif;
