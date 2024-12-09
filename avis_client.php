@@ -38,8 +38,7 @@ $restaurant = $stmt->fetch();*/
 
 	</head>
 	<style>
-		
-		.nav-link active{
+		.nav-link active {
 			background-color: #e9ecef;
 		}
 	</style>
@@ -58,11 +57,18 @@ $restaurant = $stmt->fetch();*/
 				<li class="nav-item" role="presentation">
 					<a href="quiz.html">Quiz</a>
 				</li>
+
 				<li class="nav-item" role="presentation">
 					<a class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab44" role="tab">Avis client</a>
 				</li>
 				<li class="nav-item" role="presentation">
-					<a href=".php">A propos de nous</a>
+					<a href="alertes.php">Alerte</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a href="astuces.php">Astuces</a>
+				</li>
+				<li class="nav-item" role="presentation">
+					<a href="apropos.html">A propos de nous</a>
 				</li>
 
 
@@ -176,7 +182,9 @@ $restaurant = $stmt->fetch();*/
 		</div>
 	</div>
 
-
+	<footer class="footer">
+		© 2024 Mouneh - Partagez plus. Gaspillez moi!
+	</footer>
 </body>
 <script>
 	$(document).ready(function() {

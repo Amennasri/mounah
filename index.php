@@ -1,5 +1,6 @@
 <?php
 require 'include/database.php';
+require 'include/functions.php';
 session_start();
 
 // Vérifier si l'utilisateur est connecté
@@ -40,24 +41,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
   <link rel="stylesheet" href="/css/styles.css">
   <title>Mes Dons</title>
   <style>
-    body {
-      background: #999;
-      font-family: 'Montserrat', sans-serif;
-    }
-
-    .text-logo {
-      font-size: 32px;
-      font-family: 'Holtwood One SC', serif;
-      text-align: center;
-      color: #e7480f;
-      margin-top: 20px;
-    }
-
-    .text-logo img {
-      height: 50px;
-      vertical-align: middle;
-    }
-
     .table img {
       width: 100px;
       /* Ajuste la largeur des images */
@@ -113,7 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
           <a href="quiz.html">Quiz</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a href=".php">A propos de nous</a>
+          <a href="alertes.php">Alerte</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a href="astuces.php">Astuces</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a href="apropos.html">A propos de nous</a>
         </li>
       </ul>
     </nav>
@@ -189,6 +178,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <footer class="footer">
+    © 2024 Mouneh - Partagez plus. Gaspillez moi!
+  </footer>
 </body>
 
 </html>

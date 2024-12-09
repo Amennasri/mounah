@@ -1,5 +1,6 @@
 <?php
-require_once 'include/database.php';
+require 'include/database.php';
+require 'include/functions.php';
 session_start();
 
 $nom = $gouvernorat = $telephone = $email = $password = "";

@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/quiz.css">
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Quiz Anti-Gaspillage</title>
     
 </head>
@@ -19,31 +19,30 @@
         <img src="logo.png" alt="Mouneh Logo" style="height: 100px; margin-left: 10px;">
     </h3>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link " href="accueil.php">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="index.php">Mes dons</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="avis_client.php">Avis client</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="quiz.html">Quiz</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href=".php">À propos de nous</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+    <nav>
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item" role="presentation">
+                <a href="accueil.php"></a>Accueil</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="index.php">Mes dons</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="avis_client.php">Avis client</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab11" role="tab">Quiz</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="alertes.php">Alerte</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="astuces.php">Astuces</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a href="apropos.html">A propos de nous</a>
+            </li>
+        </ul>
     </nav>
     
     <div id="points-container">
@@ -158,5 +157,8 @@
     
     
     <script src="quiz.js"></script>
+<footer class="footer">
+        © 2024 Mouneh - Partagez plus. Gaspillez moi!
+    </footer>
 </body>
 </html>

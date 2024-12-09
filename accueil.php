@@ -1,5 +1,6 @@
 <?php
 require 'include/database.php';
+require 'include/functions.php';
 session_start();
 
 // Coordonnées de l'utilisateur (exemple: latitude et longitude dynamiques)
@@ -41,9 +42,11 @@ $donations = $stmt->fetchAll();
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/styles.css">
     <title>Accueil - Liste des Dons</title>
     <style>
         .donation-item {
@@ -76,7 +79,7 @@ $donations = $stmt->fetchAll();
             color: #666;
         }
 
-        .navbar {
+        /*.navbar {
             margin-bottom: 20px;
         }
 
@@ -88,7 +91,7 @@ $donations = $stmt->fetchAll();
         .navbar-nav>.active>a {
             font-weight: bold;
             color: #e7480f !important;
-        }
+        }*/
 
         .thumbnail {
             position: relative;
@@ -131,19 +134,32 @@ $donations = $stmt->fetchAll();
         <img src="logo.png" alt="Mouneh Logo" style="height: 100px; margin-left: 10px;">
     </h3>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item"><a class="nav-link active" href="accueil.php">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.php">Mes dons</a></li>
-                    <li class="nav-item"><a class="nav-link" href="avis_client.php">Avis client</a></li>
-                    <li class="nav-item"><a class="nav-link" href="quiz.html">Quiz</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.php">À propos</a></li>
-                </ul>
-            </div>
-        </div>
+    <nav>
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" href="accueil.php">Accueil</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.php">Mes dons</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="avis_client.php">Avis client</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="quiz.html">Quiz</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="alertes.php">Alerte</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="astuces.php">Astuces</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="apropos.html">À propos de nous</a>
+            </li>
+        </ul>
     </nav>
+
 
     <div class="row">
         <?php foreach ($donations as $donation) : ?>
@@ -237,45 +253,43 @@ $donations = $stmt->fetchAll();
         </div>
         <div class="mt-5" id="review_content"></div>
     </div>
-    <footer class="text-center mt-4">
-        <p>&copy; 2024 Mouneh. Tous droits réservés.</p>
-    </footer>
-</body>
 
-</html>
 
-<div id="review_modal" class="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Envoyer le commentaire</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <h4 class="text-center mt-2 mb-4">
-                    <i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
-                    <i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
-                    <i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
-                    <i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
-                    <i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
-                </h4>
-                <div class="form-group">
-                    <input type="text" name="user_name" id="user_name" class="form-control" placeholder="Entrez votre nom" />
+    <div id="review_modal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Envoyer le commentaire</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="form-group">
-                    <textarea name="user_review" id="user_review" class="form-control" placeholder="Tapez commentaire ici"></textarea>
-                </div>
-                <div class="form-group text-center mt-4">
-                    <button type="button" class="btn btn-primary" id="save_review">Envoyer</button>
+                <div class="modal-body">
+                    <h4 class="text-center mt-2 mb-4">
+                        <i class="fas fa-star star-light submit_star mr-1" id="submit_star_1" data-rating="1"></i>
+                        <i class="fas fa-star star-light submit_star mr-1" id="submit_star_2" data-rating="2"></i>
+                        <i class="fas fa-star star-light submit_star mr-1" id="submit_star_3" data-rating="3"></i>
+                        <i class="fas fa-star star-light submit_star mr-1" id="submit_star_4" data-rating="4"></i>
+                        <i class="fas fa-star star-light submit_star mr-1" id="submit_star_5" data-rating="5"></i>
+                    </h4>
+                    <div class="form-group">
+                        <input type="text" name="user_name" id="user_name" class="form-control" placeholder="Entrez votre nom" />
+                    </div>
+                    <div class="form-group">
+                        <textarea name="user_review" id="user_review" class="form-control" placeholder="Tapez commentaire ici"></textarea>
+                    </div>
+                    <div class="form-group text-center mt-4">
+                        <button type="button" class="btn btn-primary" id="save_review">Envoyer</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
+    <a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
 
+    <footer class="footer">
+        © 2024 Mouneh - Partagez plus. Gaspillez moi!
+    </footer>
 </body>
 <script>
     $(document).ready(function() {

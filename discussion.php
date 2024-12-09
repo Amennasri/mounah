@@ -1,5 +1,6 @@
 <?php
 require 'include/database.php';
+require 'include/functions.php';
 session_start();
 
 // Vérification si l'utilisateur est connecté
@@ -118,6 +119,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message'])) {
             </div>
         </form>
     </div>
+    <footer class="footer">
+        © 2024 Mouneh - Partagez plus. Gaspillez moi!
+    </footer>
 </body>
 
 </html>
