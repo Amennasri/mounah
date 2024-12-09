@@ -1,6 +1,16 @@
 <?php
-require 'include/database.php';
-require 'include/functions.php';
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "mouneh";
+
+// Créer une connexion
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Vérifier la connexion
+if ($conn->connect_error) {
+    die("La connexion a échoué : " . $conn->connect_error);
+}
 
 $heure = date('H:i');
 ?>
@@ -11,7 +21,7 @@ $heure = date('H:i');
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot </title>
+    <title>Chatbot Santé</title>
     <link rel="stylesheet" href="chatbot.css">
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
@@ -19,7 +29,7 @@ $heure = date('H:i');
 <body>
     <div id="chatbot">
         <div class="chat-header">
-            <h3>Conseils </h3>
+            <h3>Conseils Santé</h3>
             <span id="close-chat" onclick="toggleChat()">X</span>
         </div>
 
@@ -105,5 +115,6 @@ $heure = date('H:i');
     ?>
 
 </body>
+<script src="chatbot.js"></script>
 
 </html>

@@ -1,31 +1,43 @@
 <?php
-require 'include/database.php';
-require 'include/functions.php';
+require 'include/database.php'; // Connexion à la base de données
+require 'include/functions.php'; // Fichier contenant des fonctions réutilisables
 
 // Fonction pour récupérer les produits proches de la date d'expiration
 function verifierProduits($db)
 {
     $date_actuelle = date('Y-m-d');
     $date_limite = date('Y-m-d', strtotime('+2 days'));
-    $query = "SELECT * FROM produit WHERE date_fin BETWEEN :date_actuelle AND :date_limite";
+
+    $query = "SELECT id, nom, date_fin FROM produit WHERE date_fin BETWEEN :date_actuelle AND :date_limite";
     $stmt = $db->prepare($query);
-    $stmt->execute([':date_actuelle' => $date_actuelle, ':date_limite' => $date_limite]);
+    $stmt->execute([
+        ':date_actuelle' => $date_actuelle,
+        ':date_limite' => $date_limite,
+    ]);
+
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 // Récupérer les alertes
 $alertes = verifierProduits($db);
 
-// Insertion d'un nouveau produit
+// Gestion de l'insertion d'un nouveau produit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nom = htmlspecialchars($_POST['nom']);
     $date_fin = htmlspecialchars($_POST['date_fin']);
+
     if (!empty($nom) && !empty($date_fin)) {
         $stmt = $db->prepare("INSERT INTO produit (nom, date_fin) VALUES (?, ?)");
         $stmt->execute([$nom, $date_fin]);
-        echo "<script>Swal.fire('Succès', 'Produit ajouté avec succès.', 'success');</script>";
+
+        echo "<script>
+            alert('Produit ajouté avec succès.');
+            window.location.href = 'alertes.php';
+        </script>";
     } else {
-        echo "<script>Swal.fire('Erreur', 'Veuillez remplir tous les champs.', 'error');</script>";
+        echo "<script>
+            alert('Veuillez remplir tous les champs.');
+        </script>";
     }
 }
 ?>
@@ -41,11 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/styles.css">
-    <title></title>
+    <title>Alertes Produits</title>
     <style>
         body {
             background-color: #f9f9f9;
             font-family: Arial, sans-serif;
+            padding: 20px;
         }
 
         .container {
@@ -55,21 +68,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         h1,
         h2 {
             text-align: center;
-            color: #007bff;
             margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .alert {
+            text-align: center;
+            font-weight: bold;
         }
 
         table {
             width: 100%;
-            margin: 20px 0;
             border-collapse: collapse;
+            margin-top: 20px;
         }
 
         table th,
         table td {
-            border: 1px solid #ddd;
-            padding: 8px;
             text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
         }
 
         table th {
@@ -78,20 +96,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         table tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: #f9f9f9;
         }
 
         table tr:hover {
-            background-color: #ddd;
+            background-color: #f1f1f1;
         }
 
         .btn {
-            margin-top: 10px;
+            margin: 5px;
         }
 
-        .alert-container {
+        .footer {
+            margin-top: 20px;
             text-align: center;
-            margin: 20px 0;
+            color: gray;
         }
     </style>
 </head>
@@ -130,19 +149,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </ul>
     </nav>
     <div class="container">
-        <h1>Gestion des Produits du Réfrigérateur</h1>
+        <h1>Alertes Produits</h1>
+
         <form method="POST" class="mb-4">
-            <div class="row">
-                <div class="col-md-6">
-                    <label for="nom" class="form-label">Nom du produit :</label>
-                    <input type="text" id="nom" name="nom" class="form-control" required>
-                </div>
-                <div class="col-md-6">
-                    <label for="date_fin" class="form-label">Date d'expiration :</label>
-                    <input type="date" id="date_fin" name="date_fin" class="form-control" required>
-                </div>
+            <div class="form-group">
+                <label for="nom">Nom du produit :</label>
+                <input type="text" id="nom" name="nom" class="form-control" required>
             </div>
-            <button type="submit" class="btn btn-primary mt-3">Ajouter</button>
+            <div class="form-group">
+                <label for="date_fin">Date d'expiration :</label>
+                <input type="date" id="date_fin" name="date_fin" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Ajouter un produit</button>
         </form>
 
         <h2>Produits enregistrés</h2>
@@ -155,9 +173,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </thead>
             <tbody>
                 <?php
-                $stmt = $db->query("SELECT * FROM produit ORDER BY date_fin ASC");
+                $stmt = $db->query("SELECT nom, date_fin FROM produit ORDER BY date_fin ASC");
                 $produits = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                foreach ($produits as $produit): ?>
+
+                foreach ($produits as $produit) : ?>
                     <tr>
                         <td><?= htmlspecialchars($produit['nom']); ?></td>
                         <td><?= htmlspecialchars($produit['date_fin']); ?></td>
@@ -166,24 +185,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </tbody>
         </table>
 
-        <?php if (!empty($alertes)): ?>
-            <script>
-                let alertes = <?= json_encode($alertes); ?>;
-                let message = alertes.map(produit =>
-                    `Le produit "${produit.nom}" expire le ${produit.date_fin}.`
-                ).join('\n');
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Produits proches de la date d\'expiration!',
-                    html: message.replace(/\n/g, '<br>'),
-                    timer: 10000,
-                    timerProgressBar: true
-                });
-            </script>
+        <?php if (!empty($alertes)) : ?>
+            <div class="alert alert-danger">
+                <ul>
+                    <?php foreach ($alertes as $produit) : ?>
+                        <li>⚠️ Le produit "<strong><?= htmlspecialchars($produit['nom']); ?></strong>" expire le <strong><?= htmlspecialchars($produit['date_fin']); ?></strong>.</li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php else : ?>
+            <div class="alert alert-success">
+                Aucun produit proche de sa date d'expiration.
+            </div>
         <?php endif; ?>
     </div>
+
     <footer class="footer">
-        © 2024 Mouneh - Partagez plus. Gaspillez moi!
+        &copy; 2024 Mouneh - Prolongez la vie de vos produits.
     </footer>
 </body>
 

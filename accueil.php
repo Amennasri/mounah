@@ -1,9 +1,11 @@
 <?php
 require 'include/database.php';
 require 'include/functions.php';
+require 'chatbot.php';
+
 session_start();
 
-// Coordonnées de l'utilisateur (exemple: latitude et longitude dynamiques)
+// Coordonnées de l'utilisateur
 $user_lat = 36.8065; // Exemple : latitude de Tunis
 $user_lng = 10.1815; // Exemple : longitude de Tunis
 
@@ -23,17 +25,13 @@ function calculateDistance($lat1, $lng1, $lat2, $lng2)
 // Récupérer les dons depuis la base de données
 $stmt = $db->prepare('
     SELECT nom, description, image, expiry_date, created_at, 
-           ST_X(location) AS latitude, ST_Y(location) AS longitude, donor_id,
-           (6371 * ACOS(COS(RADIANS(:user_lat)) 
-              * COS(RADIANS(ST_X(location))) 
-              * COS(RADIANS(ST_Y(location)) - RADIANS(:user_lng)) 
-              + SIN(RADIANS(:user_lat)) 
-              * SIN(RADIANS(ST_X(location))))) AS distance
+           ST_X(location) AS latitude, ST_Y(location) AS longitude, donor_id
     FROM donations
-    ORDER BY distance ASC
+    ORDER BY created_at DESC
 ');
-$stmt->execute(['user_lat' => $user_lat, 'user_lng' => $user_lng]);
+$stmt->execute();
 $donations = $stmt->fetchAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -47,6 +45,7 @@ $donations = $stmt->fetchAll();
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css" href="chatbot.css">
     <title>Accueil - Liste des Dons</title>
     <style>
         .donation-item {
@@ -155,32 +154,44 @@ $donations = $stmt->fetchAll();
                 <a class="nav-link" href="astuces.php">Astuces</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="apropos.html">À propos de nous</a>
+                <a class="nav-link" href="index.html">À propos de nous</a>
             </li>
         </ul>
     </nav>
 
 
-    <div class="row">
-        <?php foreach ($donations as $donation) : ?>
-            <div class="col-sm-6 col-md-4">
-                <div class="thumbnail">
-                    <?php if (!empty($donation['image'])) : ?>
-                        <img src="uploads/<?php echo htmlspecialchars($donation['image']); ?>" alt="Image du don" onerror="this.onerror=null; this.src='placeholder.jpg';">
-                    <?php else : ?>
-                        <img src="placeholder.jpg" alt="Image non disponible">
-                    <?php endif; ?>
-                    <div class="caption">
-                        <h4><?php echo htmlspecialchars($donation['nom']); ?></h4>
-                        <p><?php echo htmlspecialchars($donation['description']); ?></p>
-                        <p><strong>Date d'expiration :</strong> <?php echo htmlspecialchars($donation['expiry_date']); ?></p>
-                        <p><strong>Publiée le :</strong> <?php echo htmlspecialchars($donation['created_at']); ?></p>
-                        <a href="discussion.php?receiver_id=<?php echo $donation['donor_id']; ?>" class="btn btn-primary btn-sm">Discuter avec le donneur</a>
+    <div class="container">
+        <h1 class="text-center">Liste des Dons Disponibles</h1>
+        <div class="row">
+            <?php foreach ($donations as $donation): ?>
+                <?php
+                if (!is_numeric($donation['latitude']) || !is_numeric($donation['longitude'])) {
+                    continue; // Ignore les entrées sans coordonnées valides
+                }
+                $distance = calculateDistance($user_lat, $user_lng, $donation['latitude'], $donation['longitude']);
+                ?>
+                <div class="col-sm-6 col-md-4">
+                    <div class="thumbnail">
+                        <?php if (!empty($donation['image'])) : ?>
+                            <img src="uploads/<?php echo htmlspecialchars($donation['image']); ?>" alt="Image du don" onerror="this.onerror=null; this.src='placeholder.jpg';">
+                        <?php else : ?>
+                            <img src="placeholder.jpg" alt="Image non disponible">
+                        <?php endif; ?>
+
+                        <div class="caption">
+                            <h4><?= htmlspecialchars($donation['nom']) ?></h4>
+                            <p><?= htmlspecialchars($donation['description']) ?></p>
+                            <p><strong>Expire le :</strong> <?= htmlspecialchars($donation['expiry_date']) ?></p>
+                            <p class="distance"><strong>Distance :</strong> <?= round($distance, 2) ?> km</p>
+                            <p><strong>Date de publication :</strong> <?= htmlspecialchars($donation['created_at']) ?></p>
+                            <a href="discussion.php?receiver_id=<?= $donation['donor_id'] ?>" class="btn btn-primary btn-sm">Discuter avec le donneur</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
+    <a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
 
     <!--feedback -->
     <div class="container">
@@ -285,11 +296,26 @@ $donations = $stmt->fetchAll();
             </div>
         </div>
     </div>
-    <a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
 
-    <footer class="footer">
+    <!--<footer class="footer">
         © 2024 Mouneh - Partagez plus. Gaspillez moi!
-    </footer>
+    </footer>-->
+
+    <div id="chat-icon"></div>
+    <!-- Conteneur du Chatbot -->
+    <div id="chatbot">
+        <div class="chat-header">
+            Chatbot <span id="close-chat">X</span>
+        </div>
+        <div class="chat-content"></div>
+        <div class="user-input">
+            <input type="text" id="user-question" placeholder="Posez votre question...">
+            <button id="send-btn">Envoyer</button>
+        </div>
+    </div>
+
+
+    <script src="chatbot.js"></script>
 </body>
 <script>
     $(document).ready(function() {

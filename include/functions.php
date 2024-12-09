@@ -35,3 +35,31 @@ function authenticateUser($db, $email, $password)
     }
     return false;
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <!-- Dans footer.php -->
+    <div id="chat-icon"></div>
+    <div id="chatbot">
+        <div class="chat-header">
+            Chatbot <span id="close-chat">X</span>
+        </div>
+        <div class="chat-content"></div>
+        <div class="user-input">
+            <input type="text" id="user-question" placeholder="Posez votre question...">
+            <button id="send-btn">Envoyer</button>
+        </div>
+    </div>
+    <link rel="stylesheet" href="chatbot.css">
+    <script src="chatbot.js"></script>
+</body>
+
+</html>

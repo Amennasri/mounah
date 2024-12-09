@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
           <a href="astuces.php">Astuces</a>
         </li>
         <li class="nav-item" role="presentation">
-          <a href="apropos.html">A propos de nous</a>
+          <a href="index.html">A propos de nous</a>
         </li>
       </ul>
     </nav>
@@ -178,6 +178,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <a href="deconnexion.php" class="btn btn-warning mt-4"><i class="fas fa-sign-out-alt"></i> Se déconnecter</a>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  </div>
   <footer class="footer">
     © 2024 Mouneh - Partagez plus. Gaspillez moi!
   </footer>

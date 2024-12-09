@@ -70,7 +70,7 @@
                 <a class="nav-link active" data-bs-toggle="pill" data-bs-target="#tab11" role="tab">Astuces</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a href="apropos.html">A propos de nous</a>
+                <a href="index.html">A propos de nous</a>
             </li>
         </ul>
     </nav>

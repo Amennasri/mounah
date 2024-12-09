@@ -14,8 +14,18 @@ $id_user = $_SESSION["id_user"];
 $receiver_id = $_GET['receiver_id'] ?? null;
 $donation_id = $_GET['donation_id'] ?? null;
 
+// Vérification des paramètres
 /*if (!$receiver_id || !$donation_id) {
     die("Utilisateur ou don non spécifié.");
+}*/
+
+// Vérification que le receiver_id existe dans la table `users`
+$stmt = $db->prepare("SELECT COUNT(*) FROM users WHERE id = ?");
+$stmt->execute([$receiver_id]);
+$receiver_exists = $stmt->fetchColumn();
+
+/*if (!$receiver_exists) {
+    die("L'utilisateur destinataire n'existe pas.");
 }*/
 
 // Récupération des messages entre les deux utilisateurs pour un don spécifique
@@ -24,8 +34,11 @@ $stmt = $db->prepare("
     WHERE donation_id = :donation_id 
       AND ((sender_id = :id_user AND receiver_id = :receiver_id) 
         OR (sender_id = :receiver_id AND receiver_id = :id_user))
+      AND message NOT LIKE '%Utilisateur%'
+      AND message NOT LIKE '%don non spécifié%'
     ORDER BY created_at ASC
 ");
+
 $stmt->execute([
     'donation_id' => $donation_id,
     'id_user' => $id_user,
@@ -36,6 +49,8 @@ $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // Envoi d'un message
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message'])) {
     $message = htmlspecialchars($_POST['message']);
+
+    // Insertion du message dans la base de données
     $stmt = $db->prepare("INSERT INTO messages (sender_id, receiver_id, donation_id, message) VALUES (?, ?, ?, ?)");
     $stmt->execute([$id_user, $receiver_id, $donation_id, $message]);
 
@@ -120,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['message'])) {
         </form>
     </div>
     <footer class="footer">
-        © 2024 Mouneh - Partagez plus. Gaspillez moi!
+        © 2024 Mouneh - Partagez plus. Gaspillez moins!
     </footer>
 </body>
 
